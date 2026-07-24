@@ -18,7 +18,6 @@
     <link rel="dns-prefetch" href="https://connect.facebook.net">
     <link rel="dns-prefetch" href="https://wa.link">
     <!-- Meta Pixel Code -->
-    <!-- PENDIENTE: falta el Pixel ID real de este cliente. Descomentar y reemplazar PIXEL_ID_PENDIENTE cuando lo tengamos.
     <script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -28,14 +27,13 @@
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'PIXEL_ID_PENDIENTE');
+        fbq('init', '1733897057811088');
         var pvEventId = 'pv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         fbq('track', 'PageView', {}, { eventID: pvEventId });
     </script>
     <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=PIXEL_ID_PENDIENTE&ev=PageView&noscript=1"
+    src="https://www.facebook.com/tr?id=1733897057811088&ev=PageView&noscript=1"
     /></noscript>
-    -->
     <!-- End Meta Pixel Code -->
 
     <!-- Sistema de Rotación WhatsApp - Supabase (Round Robin Global) -->
@@ -114,7 +112,7 @@
 
                 // 1. Abrir ventana INMEDIATAMENTE (gesto sincrónico — evita bloqueo en móvil)
                 const nuevaVentana = window.open('about:blank', '_blank');
-                const mensaje = encodeURIComponent("Hola, quiero recibir más información");
+                const mensaje = encodeURIComponent("Hola quiero crear mi usu4rio y c4rgar");
 
                 // Evento Meta Pixel
                 if (typeof fbq !== 'undefined') {
