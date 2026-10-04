@@ -35,83 +35,20 @@
     /></noscript>
     <!-- End Meta Pixel Code -->
 
-    <!-- Sistema de Rotación WhatsApp - Supabase (Round Robin Global) -->
+    <!-- Redirección del botón principal -->
     <script>
-        const SUPABASE_URL = 'https://slhrdohakxuqrtmjufnx.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_M08Ib8V8Qgj9JhP586Y7oQ_ipoM7ict';
-        const LANDING_ID = '463'; // ID único de esta landing
-
-        // Fallback en memoria (se carga al inicio)
-        window.numerosCompletos = [];
-
-        function extractNumber(raw) {
-            return raw && raw.includes('|') ? raw.split('|')[0] : raw;
-        }
-
-        // Cargar números desde Supabase al iniciar (para fallback)
-        fetch(`${SUPABASE_URL}/rest/v1/landings?id=eq.${LANDING_ID}&select=numeros`, {
-            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-        })
-        .then(r => r.json())
-        .then(data => {
-            if (data?.[0]?.numeros?.length) {
-                window.numerosCompletos = data[0].numeros;
-                console.log('✅ Números cargados desde Supabase:', window.numerosCompletos.length);
-            } else {
-                console.warn('⚠️ No se encontraron números en Supabase para landing:', LANDING_ID);
-            }
-        })
-        .catch(err => console.error('❌ Error al cargar números:', err));
-
-        // Rotación GLOBAL: lee current_index de Supabase, lo incrementa y devuelve el número
-        async function obtenerYRotarNumero() {
-            const response = await fetch(
-                `${SUPABASE_URL}/rest/v1/landings?id=eq.${LANDING_ID}&select=numeros,current_index`,
-                { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
-            );
-            const data = await response.json();
-            if (!data?.[0]) throw new Error('Landing no encontrada');
-
-            const numeros = data[0].numeros;
-            const currentIndex = data[0].current_index ?? 0;
-            if (!numeros?.length) throw new Error('Sin números');
-
-            const indexUsado = currentIndex % numeros.length;
-            const nextIndex = (currentIndex + 1) % numeros.length;
-            const numeroSeleccionado = extractNumber(numeros[indexUsado]);
-
-            await fetch(
-                `${SUPABASE_URL}/rest/v1/landings?id=eq.${LANDING_ID}`,
-                {
-                    method: 'PATCH',
-                    headers: {
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${SUPABASE_KEY}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=minimal'
-                    },
-                    body: JSON.stringify({ current_index: nextIndex })
-                }
-            );
-
-            console.log('🎯 Rotación global - índice usado:', indexUsado, '→ número:', numeroSeleccionado);
-            return numeroSeleccionado;
-        }
+        const REDIRECT_URL = 'https://ganaya.live/landing11';
 
         // Generar ID único para deduplicación de eventos
         function generateEventId() {
             return 'evt_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         }
 
-        // Handler para el click en el botón de WhatsApp
+        // Handler para el click en el botón principal
         document.addEventListener('click', function(e) {
             if (e.target.closest('#btnWhatsappOficial')) {
                 e.preventDefault();
                 e.stopPropagation();
-
-                // 1. Abrir ventana INMEDIATAMENTE (gesto sincrónico — evita bloqueo en móvil)
-                const nuevaVentana = window.open('about:blank', '_blank');
-                const mensaje = encodeURIComponent("Hola quiero crear mi usu4rio y c4rgar");
 
                 // Evento Meta Pixel
                 if (typeof fbq !== 'undefined') {
@@ -122,33 +59,12 @@
                         value: 1.00,
                         currency: 'USD'
                     }, { eventID: eventId });
-                    console.log('✅ CompleteRegistration tracked, eventID:', eventId);
+                    console.log('✅ Contact tracked, eventID:', eventId);
                 }
 
-                obtenerYRotarNumero().then(numero => {
-                    const url = `https://wa.me/${numero}?text=${mensaje}`;
-                    // 2. Si el popup no fue bloqueado, cambiar su URL
-                    if (nuevaVentana && !nuevaVentana.closed) {
-                        nuevaVentana.location.href = url;
-                    } else {
-                        // 3. Fallback para móviles que bloquean popups
-                        window.location.href = url;
-                    }
-                }).catch(() => {
-                    // Fallback con el primer número en memoria
-                    const fallback = extractNumber(window.numerosCompletos[0]);
-                    if (fallback) {
-                        const url = `https://wa.me/${fallback}?text=${mensaje}`;
-                        if (nuevaVentana && !nuevaVentana.closed) {
-                            nuevaVentana.location.href = url;
-                        } else {
-                            window.location.href = url;
-                        }
-                    } else {
-                        console.warn('⚠️ No hay números configurados en el admin');
-                        if (nuevaVentana) nuevaVentana.close();
-                    }
-                });
+                // Abrir en pestaña nueva; si el navegador lo bloquea, redirigir en la misma
+                const nuevaVentana = window.open(REDIRECT_URL, '_blank');
+                if (!nuevaVentana) window.location.href = REDIRECT_URL;
             }
         }, true);
     </script>
@@ -753,9 +669,9 @@
         <section class="hero" style="margin-top:0;position:relative;z-index:5;background:rgba(74,74,74,.12);border:1px solid rgba(74,74,74,.45);">
             <p>Escribinos apretando el botón de abajo</p>
             <div class="cta-stack">
-                <div class="whatsapp-cta cta-attention" id="btnWhatsappOficial" style="cursor:pointer;" aria-label="Abrir WhatsApp">
+                <div class="whatsapp-cta cta-attention" id="btnWhatsappOficial" style="cursor:pointer;" aria-label="Crear usuario">
                     <div class="btn-whatsapp">
-                        <img src="logo_whatsapp.png" alt="WhatsApp" class="wa-icon" loading="eager" /> <span>RECIBIR OFERTA</span>
+                        <img src="logo_whatsapp.png" alt="WhatsApp" class="wa-icon" loading="eager" /> <span>CREAR USUARI0</span>
                     </div>
                 </div>
                 <div class="mini-note"><span class="green-text">ATENCIÓN Y RET1R0S SIN L1M1TES LAS 24 HS</span></div>
